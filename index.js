@@ -31,6 +31,12 @@ app.get("/api/persons", (request, response) => {
 	response.send(entries);
 });
 
+app.get("/info", (request, response) => {
+	response.send(
+		`Phonebook has entries for ${entries.length} people <br><br>${Date()}`
+	);
+});
+
 // app.listen is needed to run the server
 app.listen(port, () => {
 	console.log(`Server running on port ${port}`);
