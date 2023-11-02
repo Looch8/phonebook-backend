@@ -3,7 +3,7 @@ const app = express();
 const port = 3001;
 
 // list of entries used for testing
-const entries = [
+let entries = [
 	{
 		id: 1,
 		name: "Arto Hellas",
@@ -52,4 +52,12 @@ app.get("/api/persons/:id", (request, response) => {
 	} else {
 		response.status(404).send("Sorry cannot find that entry");
 	}
+});
+
+// DELETE single phonebook entry
+
+app.delete("/api/persons/:id", (request, response) => {
+	let id = +request.params.id;
+	entries = entries.filter((u) => u.id !== id);
+	response.send(entries);
 });
