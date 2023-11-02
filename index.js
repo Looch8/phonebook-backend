@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const port = 3001;
 
+app.use(express.json());
+
 // list of entries used for testing
 let entries = [
 	{
@@ -60,4 +62,29 @@ app.delete("/api/persons/:id", (request, response) => {
 	let id = +request.params.id;
 	entries = entries.filter((u) => u.id !== id);
 	response.send(entries);
+});
+
+const generateID = () => {
+	min = Math.ceil(1);
+	max = Math.floor(1000);
+	return Math.floor(Math.random() * (max - min));
+};
+// CREATE new entries
+app.post("/api/persons", (request, response) => {
+	const body = request.body;
+
+	if (!body.name || !body.number) {
+		return response.status(400).json({
+			error: `content missing`,
+		});
+	}
+	const entry = {
+		id: generateID(),
+		name: body.name,
+		number: body.number,
+	};
+
+	entries = entries.concat(entry);
+
+	response.json(entry);
 });
