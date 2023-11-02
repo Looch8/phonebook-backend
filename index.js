@@ -26,11 +26,12 @@ const entries = [
 	},
 ];
 
-// app.get is used to define the routes
+// Return all entries
 app.get("/api/persons", (request, response) => {
 	response.send(entries);
 });
 
+// Info page
 app.get("/info", (request, response) => {
 	response.send(
 		`Phonebook has entries for ${entries.length} people <br><br>${Date()}`
@@ -40,4 +41,15 @@ app.get("/info", (request, response) => {
 // app.listen is needed to run the server
 app.listen(port, () => {
 	console.log(`Server running on port ${port}`);
+});
+
+// GET Single phonebook entry
+app.get("/api/persons/:id", (request, response) => {
+	let id = +request.params.id;
+	let user = entries.find((u) => u.id === id);
+	if (user) {
+		response.send(user);
+	} else {
+		response.status(404).send("Sorry cannot find that entry");
+	}
 });
