@@ -1,8 +1,10 @@
 const express = require("express");
 const app = express();
 const port = 3001;
+const morgan = require("morgan");
 
 app.use(express.json());
+app.use(morgan("tiny"));
 
 // list of entries used for testing
 let entries = [
@@ -27,6 +29,14 @@ let entries = [
 		number: "39-23-6423122",
 	},
 ];
+
+// morgan.token("type", function (request, response) {
+// 	return request.headers["content-type"];
+// });
+
+morgan.token("body", function (request, response) {
+	return JSON.stringify(request.body);
+});
 
 // Return all entries
 app.get("/api/persons", (request, response) => {
@@ -78,6 +88,7 @@ app.post("/api/persons", (request, response) => {
 			error: `content missing`,
 		});
 	}
+
 	const entry = {
 		id: generateID(),
 		name: body.name,
